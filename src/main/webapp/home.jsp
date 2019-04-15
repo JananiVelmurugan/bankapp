@@ -15,11 +15,10 @@
 	<a href="../customer/balance">show customer balance</a>
 	<br>
 	<a href="../withdraw.jsp">WITHDRAW</a>
-
 	<br>
 	<a href="../transfer.jsp"> FUND TRANSFER</a>
 	<br>
-	<a href="../addbalance.jsp">Add Money</a>
+	<a href="../deposit.jsp">DEPOSIT</a>
 	<br>
 	<a href="../customer/transaction">RECEIPT</a>
 	<br>

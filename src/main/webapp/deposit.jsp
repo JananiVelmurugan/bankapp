@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-    pageEncoding="ISO-8859-1"%>
+	pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -7,11 +7,10 @@
 <title>Insert title here</title>
 </head>
 <body>
-<form action="../customer/addbalance" method="post">
+	<form action="../customer/deposit" method="post">
+		Amount To Deposit<input type="number" name="amount"> <input
+			type="submit" value="Deposit">
 
-Add amount INR  <input type="number" name="inmoney" value="money">
-	<input type="submit" value="ADD">
-
-
+	</form>
 </body>
 </html>

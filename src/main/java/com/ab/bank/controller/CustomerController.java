@@ -86,61 +86,63 @@ public class CustomerController {
 //		return modelAndView;
 //	}
 //
-	@PostMapping("/addbalance")
-	public ModelAndView addbalance(@RequestParam Integer inmoney) {
-		ModelAndView modelAndView;
-		if (inmoney < 0) {
-			modelAndView = new ModelAndView("negetive");
 
-		} else {
-		}
-		int oldmoney = customerservice.findBalanceById(temp);
-		int updatedMoney = inmoney + oldmoney;
-		Customer customer = customerservice.findById(temp);
-		customer.setAccountBalance(updatedMoney);
-		customerservice.save(customer);
-
-		int customerobj = customerservice.findBalanceById(temp);
-		modelAndView = new ModelAndView("showbalance");
-
-		modelAndView.addObject("BAL", customerobj);
-		Transaction transaction = new Transaction();
-		transaction.setAmount(inmoney);
-		transaction.setType("money added");
-
-		return modelAndView;
-	}
-
-	@PostMapping("/withdraw")
+	@PostMapping("/deposit")
 	public ModelAndView doWithdraw(@RequestParam Integer amount) {
 
 		Customer customer = customerService.findById(temp);
 		int currentBalance = customer.getAccountBalance();
 
 		ModelAndView modelAndView;
-		System.out.println("before withdrawal--->" + currentBalance);
+		System.out.println("before depositing --->" + currentBalance);
 		System.out.println("amount--->" + amount);
 
-		if (currentBalance < amount) {
-			modelAndView = new ModelAndView("lowbalance");
-			return modelAndView;
-		} else {
-			currentBalance -= amount;
-			System.out.println("after withdrawal--->" + currentBalance);
-			customer.setAccountBalance(currentBalance);
-			customerService.save(customer);
+		currentBalance += amount;
+		System.out.println("after depositing--->" + currentBalance);
+		customer.setAccountBalance(currentBalance);
+		customerService.save(customer);
 
-			Transaction transaction = new Transaction();
-			transaction.setAmount(amount);
-			transaction.setType("WITHDRAWN");
-			transaction.setCustomer(customer);
-			transactionService.save(transaction);
+		Transaction transaction = new Transaction();
+		transaction.setAmount(amount);
+		transaction.setType("DEPOSITED");
+		transaction.setCustomer(customer);
+		transactionService.save(transaction);
 
-			modelAndView = new ModelAndView("showbalance");
-			modelAndView.addObject("CURRENTBALANCE", currentBalance);
-		}
+		modelAndView = new ModelAndView("showbalance");
+		modelAndView.addObject("CURRENTBALANCE", currentBalance);
+
 		return modelAndView;
 	}
+//	@PostMapping("/withdraw")
+//	public ModelAndView doWithdraw(@RequestParam Integer amount) {
+//
+//		Customer customer = customerService.findById(temp);
+//		int currentBalance = customer.getAccountBalance();
+//
+//		ModelAndView modelAndView;
+//		System.out.println("before withdrawal--->" + currentBalance);
+//		System.out.println("amount--->" + amount);
+//
+//		if (currentBalance < amount) {
+//			modelAndView = new ModelAndView("lowbalance");
+//			return modelAndView;
+//		} else {
+//			currentBalance -= amount;
+//			System.out.println("after withdrawal--->" + currentBalance);
+//			customer.setAccountBalance(currentBalance);
+//			customerService.save(customer);
+//
+//			Transaction transaction = new Transaction();
+//			transaction.setAmount(amount);
+//			transaction.setType("WITHDRAWN");
+//			transaction.setCustomer(customer);
+//			transactionService.save(transaction);
+//
+//			modelAndView = new ModelAndView("showbalance");
+//			modelAndView.addObject("CURRENTBALANCE", currentBalance);
+//		}
+//		return modelAndView;
+//	}
 
 //	@PostMapping("/transfer")
 //	public ModelAndView doFundTransfer(@RequestParam int id, @RequestParam int amount) {
