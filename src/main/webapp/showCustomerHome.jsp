@@ -1,7 +1,3 @@
-
-
-
-
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html>
@@ -11,17 +7,16 @@
 <title>Insert title here</title>
 </head>
 <body>
-
 	<h3>Login</h3>
 	<form action="customer/validate" method="post">
 		<table>
 
 			<tr>
-				<th>id</th>
-				<td><input type="number" name="id" value="1"></td>
+				<th>Id</th>
+				<td><input type="text" name="id" value="1"></td>
 			</tr>
 			<tr>
-				<th>password</th>
+				<th>Password</th>
 				<td><input type="password" name="password" value="mehta"></td>
 			</tr>
 			<tr>
@@ -30,7 +25,17 @@
 			</tr>
 		</table>
 	</form>
-	<a href="/manager.jsp">Manager Login</a>
+
+
+
 
 </body>
 </html>
+
+
+
+
+
+
+
+
