@@ -8,15 +8,14 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.ab.bank.model.Customer;
-import com.ab.bank.model.Transaction;
-import com.ab.bank.service.CustomerServiceImpl;
+import com.ab.bank.service.ICustomerService;
 import com.ab.bank.service.ITransactionService;
 
 @RestController
 @RequestMapping("/customer")
 public class CustomerController {
 	@Autowired
-	private CustomerServiceImpl customerService;
+	private ICustomerService customerService;
 
 	@Autowired
 	private ITransactionService transactionService;
@@ -43,15 +42,16 @@ public class CustomerController {
 //
 //	}
 //
-	@PostMapping("checkuser")
+	@PostMapping("validate")
 	public ModelAndView requestLogin(@RequestParam int id, @RequestParam String password) {
 		ModelAndView modelAndView;
-		temp = id;
-		Customer custobj = customerService.getCustomerByIdAndPassword(id, password);
-		if (custobj == null) {
-			modelAndView = new ModelAndView("nomatch");
-		} else {
+		Customer customer = customerService.findById(id);
+		if (customer == null) {
+			modelAndView = new ModelAndView("index");
+		} else if (customer.getId() == id && customer.getPassword().equals(password)) {
 			modelAndView = new ModelAndView("home");
+		} else {
+			modelAndView = new ModelAndView("index");
 		}
 		return modelAndView;
 	}
@@ -85,34 +85,33 @@ public class CustomerController {
 //
 //		return modelAndView;
 //	}
+
+//	@PostMapping("/deposit")
+//	public ModelAndView doWithdraw(@RequestParam Integer amount) {
 //
-
-	@PostMapping("/deposit")
-	public ModelAndView doWithdraw(@RequestParam Integer amount) {
-
-		Customer customer = customerService.findById(temp);
-		int currentBalance = customer.getAccountBalance();
-
-		ModelAndView modelAndView;
-		System.out.println("before depositing --->" + currentBalance);
-		System.out.println("amount--->" + amount);
-
-		currentBalance += amount;
-		System.out.println("after depositing--->" + currentBalance);
-		customer.setAccountBalance(currentBalance);
-		customerService.save(customer);
-
-		Transaction transaction = new Transaction();
-		transaction.setAmount(amount);
-		transaction.setType("DEPOSITED");
-		transaction.setCustomer(customer);
-		transactionService.save(transaction);
-
-		modelAndView = new ModelAndView("showbalance");
-		modelAndView.addObject("CURRENTBALANCE", currentBalance);
-
-		return modelAndView;
-	}
+//		Customer customer = customerService.findById(temp);
+//		int currentBalance = customer.getAccountBalance();
+//
+//		ModelAndView modelAndView;
+//		System.out.println("before depositing --->" + currentBalance);
+//		System.out.println("amount--->" + amount);
+//
+//		currentBalance += amount;
+//		System.out.println("after depositing--->" + currentBalance);
+//		customer.setAccountBalance(currentBalance);
+//		customerService.save(customer);
+//
+//		Transaction transaction = new Transaction();
+//		transaction.setAmount(amount);
+//		transaction.setType("DEPOSITED");
+//		transaction.setCustomer(customer);
+//		transactionService.save(transaction);
+//
+//		modelAndView = new ModelAndView("showbalance");
+//		modelAndView.addObject("CURRENTBALANCE", currentBalance);
+//
+//		return modelAndView;
+//	}
 //	@PostMapping("/withdraw")
 //	public ModelAndView doWithdraw(@RequestParam Integer amount) {
 //

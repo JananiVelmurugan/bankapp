@@ -13,7 +13,7 @@
 <body>
 
 	<h3>Login</h3>
-	<form action="customer/checkuser" method="post">
+	<form action="customer/validate" method="post">
 		<table>
 
 			<tr>
