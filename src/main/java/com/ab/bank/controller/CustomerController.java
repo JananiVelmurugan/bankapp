@@ -56,24 +56,27 @@ public class CustomerController {
 	@PostMapping("validate")
 	public ModelAndView requestLogin(@RequestParam int id, @RequestParam String password) {
 		ModelAndView modelAndView;
-		// Check whether customer with the given id and password is present in the table
-		Customer customer = customerService.findByIdAndPassword(id, password);
 
-		// If there is no customer with the given id
-		if (customer == null) {
-			modelAndView = new ModelAndView("index");
-		}
 		// Login for manager with static id and password
-		else if (customer.getId() == 100 && customer.getPassword().equals("ayan123")) {
+		if (id == 100 && password.equals("100")) {
 			modelAndView = new ModelAndView("showManagerHome");
-		}
-		// Login if its a valid customer in the table
-		else {
-			// Assign the given id to customer id
-			customerId = id;
-			modelAndView = new ModelAndView("showCustomerHome");
-		}
+		} else {
 
+			// Check whether customer with the given id and password is present in the table
+			Customer customer = customerService.findByIdAndPassword(id, password);
+
+			// If there is no customer with the given id
+			if (customer == null) {
+				modelAndView = new ModelAndView("index");
+			}
+
+			// Login if its a valid customer in the table
+			else {
+				// Assign the given id to customer id
+				customerId = id;
+				modelAndView = new ModelAndView("showCustomerHome");
+			}
+		}
 		// Return the JSP page
 		return modelAndView;
 	}

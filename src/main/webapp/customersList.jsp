@@ -19,21 +19,21 @@
 				<th>User Name</th>
 				<th>Password</th>
 				<th>Balance</th>
-			
+
 			</tr>
 		</thead>
 		<tbody>
-			<c:forEach var="a" items="${CUSTLIST}">
+			<c:forEach var="customer" items="${CUSTOMERSLIST}">
 				<tr>
-				<td>${a.id}</td>
-					<td>${a.firstName}</td>
-					<td>${a.lastName}</td>
-					<td>${a.userName}</td>
-				    <td>${a.password}</td>
-				    <td>${a.accountBalance}</td>
-				    
-					
-					
+					<td>${customer.id}</td>
+					<td>${customer.firstName}</td>
+					<td>${customer.lastName}</td>
+					<td>${customer.userName}</td>
+					<td>${customer.password}</td>
+					<td>${customer.accountBalance}</td>
+
+
+
 				</tr>
 			</c:forEach>
 		</tbody>
