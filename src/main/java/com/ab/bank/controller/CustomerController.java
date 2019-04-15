@@ -70,7 +70,7 @@ public class CustomerController {
 				modelAndView = new ModelAndView("index");
 			}
 
-			// Login if its a valid customer in the table
+			// Login if its a valid cus;tomer in the table
 			else {
 				// Assign the given id to customer id
 				customerId = id;
