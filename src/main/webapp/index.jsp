@@ -26,7 +26,7 @@
 			</tr>
 			<tr>
 				<td></td>
-				<td><input type="submit" value="SUBMIT"></td>
+				<td><input type="submit" value="Login"></td>
 			</tr>
 		</table>
 	</form>

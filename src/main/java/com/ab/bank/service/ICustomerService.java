@@ -10,6 +10,8 @@ public interface ICustomerService {
 
 	public void save(Customer customer);
 
-	public Customer findById(int id);
+	public Customer findById(Integer id);
+
+	public Customer findByIdAndPassword(Integer id, String password);
 
 }

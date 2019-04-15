@@ -45,10 +45,8 @@ public class CustomerController {
 	@PostMapping("validate")
 	public ModelAndView requestLogin(@RequestParam int id, @RequestParam String password) {
 		ModelAndView modelAndView;
-		Customer customer = customerService.findById(id);
-		if (customer == null) {
-			modelAndView = new ModelAndView("index");
-		} else if (customer.getId() == id && customer.getPassword().equals(password)) {
+		Customer customer = customerService.findByIdAndPassword(id, password);
+		if (customer != null) {
 			modelAndView = new ModelAndView("home");
 		} else {
 			modelAndView = new ModelAndView("index");

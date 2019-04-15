@@ -25,10 +25,21 @@ public class CustomerServiceImpl implements ICustomerService {
 	}
 
 	@Override
-	public Customer findById(int id) {
+	public Customer findById(Integer id) {
 		Customer customer = customerDao.findById(id).get();
 		return customer;
 
+	}
+
+	@Override
+	public Customer findByIdAndPassword(Integer id, String password) {
+		Customer customer = null;
+		try {
+			customer = customerDao.findByIdAndPassword(id, password);
+		} catch (Exception e) {
+			customer = null;
+		}
+		return customer;
 	}
 
 }
