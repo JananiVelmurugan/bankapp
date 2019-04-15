@@ -42,12 +42,13 @@ public class CustomerController {
 		customerService.save(customer);
 
 		// List all the customers from the table
-		List<Customer> customerList = customerService.findAll();
+		List<Customer> customersList = customerService.findAll();
 
 		// display the customers list in the JSP page
 		ModelAndView modelAndView = new ModelAndView("customersList");
-		modelAndView.addObject("CUSTOMERSLIST", customerList);
+		modelAndView.addObject("CUSTOMERSLIST", customersList);
 
+		// Return the JSP page
 		return modelAndView;
 
 	}
@@ -68,13 +69,16 @@ public class CustomerController {
 		}
 		// Login if its a valid customer in the table
 		else {
+			// Assign the given id to customer id
 			customerId = id;
 			modelAndView = new ModelAndView("showCustomerHome");
 		}
+
+		// Return the JSP page
 		return modelAndView;
 	}
 
-	@GetMapping("/showbalance")
+	@GetMapping("/showBalance")
 	public ModelAndView showBalance() {
 		// Find the customer with the id
 		Customer customer = customerService.findById(customerId);
@@ -82,123 +86,184 @@ public class CustomerController {
 		// Get the balance from the customer object
 		int accountBalance = customer.getAccountBalance();
 
-		// Display
-		ModelAndView modelAndView = new ModelAndView("showbalance");
-
+		// Display the balance in the JSP page
+		ModelAndView modelAndView = new ModelAndView("showBalance");
 		modelAndView.addObject("CURRENTBALANCE", accountBalance);
+
+		// Return the JSP page
 		return modelAndView;
 	}
 
 	@PostMapping("/deposit")
 	public ModelAndView deposit(@RequestParam Integer amount) {
 
+		ModelAndView modelAndView;
+
+		// Find the customer based on the id
 		Customer customer = customerService.findById(customerId);
+
+		// Get the account balance of the customer
 		int currentBalance = customer.getAccountBalance();
 
-		ModelAndView modelAndView;
-		System.out.println("before depositing --->" + currentBalance);
-		System.out.println("amount--->" + amount);
-
+		// Deposit the amount to the balance of the customer
 		currentBalance += amount;
-		System.out.println("after depositing--->" + currentBalance);
+
+		// Update with the new balance
 		customer.setAccountBalance(currentBalance);
+
+		// Save the customer with the updated balance
 		customerService.save(customer);
 
+		// Create a new transaction object
 		Transaction transaction = new Transaction();
+
+		// Populate the transaction object
 		transaction.setAmount(amount);
 		transaction.setType("DEPOSITED");
 		transaction.setCustomer(customer);
+
+		// Save the transaction object
 		transactionService.save(transaction);
 
-		modelAndView = new ModelAndView("showbalance");
+		// Display the JSP page
+		modelAndView = new ModelAndView("showBalance");
 		modelAndView.addObject("CURRENTBALANCE", currentBalance);
 
+		// Return the JSP page
 		return modelAndView;
 	}
 
 	@PostMapping("/withdraw")
 	public ModelAndView withdraw(@RequestParam Integer amount) {
 
+		ModelAndView modelAndView;
+
+		// Find the customer based on the id
 		Customer customer = customerService.findById(customerId);
+
+		// Get the account balance of the customer
 		int currentBalance = customer.getAccountBalance();
 
-		ModelAndView modelAndView;
-		System.out.println("before withdrawal--->" + currentBalance);
-		System.out.println("amount--->" + amount);
-
+		// If the balance is less than the amount to be withdrawn
 		if (currentBalance < amount) {
-			modelAndView = new ModelAndView("lowbalance");
+			modelAndView = new ModelAndView("error");
 			return modelAndView;
-		} else {
+		}
+		// If the balance is greater than or equal to the amount to be withdrawn
+		else {
+			// Withdraw the amount
 			currentBalance -= amount;
-			System.out.println("after withdrawal--->" + currentBalance);
+
+			// Update the current balance after withdrawal
 			customer.setAccountBalance(currentBalance);
+
+			// Save the customer
 			customerService.save(customer);
 
+			// Create a new transaction object
 			Transaction transaction = new Transaction();
+
+			// Populate the transaction object
 			transaction.setAmount(amount);
 			transaction.setType("WITHDRAWN");
 			transaction.setCustomer(customer);
+
+			// Save the transaction object
 			transactionService.save(transaction);
 
-			modelAndView = new ModelAndView("showbalance");
+			// Display the JSP page
+			modelAndView = new ModelAndView("showBalance");
 			modelAndView.addObject("CURRENTBALANCE", currentBalance);
 		}
+
+		// Return the JSP page
 		return modelAndView;
 	}
 
 	@PostMapping("/transfer")
 	public ModelAndView doFundTransfer(@RequestParam int id, @RequestParam int amount) {
+		ModelAndView modelAndView;
 
+		// Find the sender with the id stored the customer id
 		Customer sender = customerService.findById(customerId);
+
+		// Find the receiver with the given id from the JSP
 		Customer receiver = customerService.findById(id);
 
+		// Get the account balance from the sender
 		int senderBalance = sender.getAccountBalance();
 
-		ModelAndView modelAndView;
+		// Check if the sender balance is less than the amount to be transferred
 		if (senderBalance < amount) {
-			modelAndView = new ModelAndView("accountinsfficient");
-			return modelAndView;
-		} else {
+			modelAndView = new ModelAndView("error");
+
+		}
+		// If the sender balance is sufficient for the transfer
+		else {
+			// Debit the amount from sender
 			senderBalance = sender.getAccountBalance() - amount;
+
+			// Credit the amount to receiver
 			int receiverBalance = receiver.getAccountBalance() + amount;
 
+			// Update the sender balance
 			sender.setAccountBalance(senderBalance);
+
+			// Update the receiver balance
 			receiver.setAccountBalance(receiverBalance);
 
+			// Save the sender object
 			customerService.save(sender);
+
+			// Save the receiver object
 			customerService.save(receiver);
 
+			// Create a new transaction for sender
 			Transaction senderTransaction = new Transaction();
+
+			// Populate the sender transaction object
 			senderTransaction.setAmount(amount);
 			senderTransaction.setType("DEBITED");
 			senderTransaction.setCustomer(sender);
+
+			// Save the sender transaction object
 			transactionService.save(senderTransaction);
 
+			// Create a new transaction for receiver
 			Transaction receiverTransaction = new Transaction();
+
+			// Populate the receiver transaction object
 			receiverTransaction.setAmount(amount);
 			receiverTransaction.setType("CREDITED");
 			receiverTransaction.setCustomer(receiver);
+
+			// Save the receiver transaction object
 			transactionService.save(receiverTransaction);
 
-			modelAndView = new ModelAndView("transferdetails");
-
+			// Display the JSP page
+			modelAndView = new ModelAndView("transferDetails");
 			modelAndView.addObject("FROMACCOUNTNO", sender.getId());
 			modelAndView.addObject("TOACCOUNTNO", receiver.getId());
 			modelAndView.addObject("AMOUNTTRANSFERRED", amount);
 			modelAndView.addObject("SENDERBALANCE", senderBalance);
 
-			return modelAndView;
 		}
 
+		// Return the JSP page
+		return modelAndView;
 	}
 
-	@GetMapping("transaction")
-	public ModelAndView printTransactions() {
+	@GetMapping("showTransaction")
+	public ModelAndView showTransaction() {
+
+		// Find all the transactions made by the customer with the Id
 		List<Transaction> transactionsList = transactionService.findByCustomerId(customerId);
-		System.out.println(transactionsList.size());
-		ModelAndView modelandview = new ModelAndView("myReceipt");
+
+		// Display the JSP page
+		ModelAndView modelandview = new ModelAndView("showTransaction");
 		modelandview.addObject("TRANSACTIONSLIST", transactionsList);
+
+		// Return the JSP page
 		return modelandview;
 
 	}

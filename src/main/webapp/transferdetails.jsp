@@ -13,12 +13,6 @@
 	<br> AMOUNT TRANSFERRED:${AMOUNTTRANSFERRED}
 	<br> BALANCE:${SENDERBALANCE}
 
-	<%-- your previous account balance :${{PBALSENDER}} --%>
-	<%-- <br> money sent :${{SENT}}
-	<br> current account balance :${{UBALSENDER}} --%>
-	<%-- <br> reciever previous account balance :${{PBALRECIEVER}}
-	<br>
-	final reciever balance                 :${{UBALRECIEVER}} <br> --%>
 
 </body>
 </html>

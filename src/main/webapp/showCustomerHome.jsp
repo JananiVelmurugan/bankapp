@@ -7,35 +7,18 @@
 <title>Insert title here</title>
 </head>
 <body>
-	<h3>Login</h3>
-	<form action="customer/validate" method="post">
-		<table>
-
-			<tr>
-				<th>Id</th>
-				<td><input type="text" name="id" value="1"></td>
-			</tr>
-			<tr>
-				<th>Password</th>
-				<td><input type="password" name="password" value="mehta"></td>
-			</tr>
-			<tr>
-				<td></td>
-				<td><input type="submit" value="Login"></td>
-			</tr>
-		</table>
-	</form>
-
-
-
-
+	<h3>Banking System</h3>
+	Pick Your Option
+	<br>
+	<a href="../deposit.jsp">DEPOSIT</a>
+	<br>
+	<a href="../withdraw.jsp">WITHDRAW</a>
+	<br>
+	<a href="../customer/showBalance">SHOW BALANCE</a>
+	<br>
+	<a href="../transfer.jsp">FUND TRANSFER</a>
+	<br>
+	<a href="../customer/showTransaction">SHOW TRANSACTION</a>
 </body>
 </html>
-
-
-
-
-
-
-
 
