@@ -30,7 +30,7 @@ public class CustomerController {
 	public ModelAndView save(@RequestParam String firstName, @RequestParam String lastName,
 			@RequestParam String userName, @RequestParam String password) {
 
-		// Create a new customer
+		// Create a new customer.
 		Customer customer = new Customer();
 		customer.setFirstName(firstName);
 		customer.setLastName(lastName);
